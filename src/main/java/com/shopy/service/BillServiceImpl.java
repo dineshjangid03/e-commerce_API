@@ -3,14 +3,19 @@ package com.shopy.service;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopy.exception.BillException;
 import com.shopy.exception.OrderException;
 import com.shopy.model.Bill;
+import com.shopy.repository.BillRepo;
 
 @Service
 public class BillServiceImpl implements BillService{
+	
+	@Autowired
+	private BillRepo br;
 
 	@Override
 	public Bill addBill(Bill bill, int orderId) throws BillException, OrderException {

@@ -1,13 +1,18 @@
 package com.shopy.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopy.exception.CartException;
 import com.shopy.exception.ProductException;
 import com.shopy.model.Cart;
+import com.shopy.repository.CartRepo;
 
 @Service
 public class CartServiceImpl implements CartService{
+	
+	@Autowired
+	private CartRepo cr;
 
 	@Override
 	public Cart addCart(Cart cart) {
