@@ -4,6 +4,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,25 +27,34 @@ public class OrderController {
 	@Autowired
 	private OrderService os;
 	
-
-	public Order addOrder(Order order, int cartId) throws OrderException, CartException {
-		return null;
+	@PostMapping("/addOrder/{cartId}")
+	public ResponseEntity<Order> addOrder(@RequestBody Order order, @PathVariable("cartId") int cartId) throws OrderException, CartException {
+		Order o=os.addOrder(order, cartId);
+		return new ResponseEntity<Order>(o,HttpStatus.ACCEPTED);
 	}
 
-	public Order viewOrder(int orderId) throws OrderException {
-		return null;
+	@GetMapping("/viewOrder/{orderId}")
+	public ResponseEntity<Order> viewOrder(@PathVariable("orderId") int orderId) throws OrderException {
+		Order o=os.viewOrder(orderId);
+		return new ResponseEntity<Order>(o,HttpStatus.ACCEPTED);
 	}
 
-	public List<Order> viewOrdersviewBills(LocalDate startDate, LocalDate endDate) throws OrderException {
-		return null;
+	@GetMapping("/viewOrdersByDate/{startDate}/{endDate}")
+	public ResponseEntity<List<Order>> viewOrdersByDate(@PathVariable("startDate") LocalDate startDate, @PathVariable("endDate") LocalDate endDate) throws OrderException {
+		List<Order> list=os.viewOrdersByDate(startDate, endDate);
+		return new ResponseEntity<List<Order>>(list,HttpStatus.ACCEPTED);
 	}
 
-	public Order updateOrderStatus(int orderId, String status) throws OrderException {
-		return null;
+	@PutMapping("/updateOrderStatus/{orderId}/{status}")
+	public ResponseEntity<Order> updateOrderStatus(@PathVariable("orderId") int orderId, @PathVariable("status") String status) throws OrderException {
+		Order o=os.updateOrderStatus(orderId, status);
+		return new ResponseEntity<Order>(o,HttpStatus.ACCEPTED);
 	}
 
-	public Order deleteOrder(int orderId) throws OrderException {
-		return null;
+	@DeleteMapping("/deleteOrder/{orderId}")
+	public ResponseEntity<Order> deleteOrder(@PathVariable("orderId") int orderId) throws OrderException {
+		Order o=os.deleteOrder(orderId);
+		return new ResponseEntity<Order>(o,HttpStatus.ACCEPTED);
 	}
 
 
