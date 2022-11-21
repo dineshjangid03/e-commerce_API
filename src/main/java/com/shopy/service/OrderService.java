@@ -13,7 +13,7 @@ public interface OrderService {
 	
 	public Order viewOrder(int orderId)throws OrderException;
 	
-	public List<Order> viewOrdersviewBills(LocalDate startDate, LocalDate endDate)throws OrderException;
+	public List<Order> viewOrdersByDate(LocalDate startDate, LocalDate endDate)throws OrderException;
 	
 	public Order updateOrderStatus(int orderId, String status)throws OrderException;
 	
