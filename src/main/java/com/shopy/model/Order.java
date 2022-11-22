@@ -1,6 +1,7 @@
 package com.shopy.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -22,7 +23,9 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer orderId;
 	
-	private LocalDateTime dateAndTime;
+	private LocalDate orderDate;
+	
+	private LocalTime orderTime;
 	
 	private String status;
 	
