@@ -36,10 +36,11 @@ public class Customer {
 	@Embedded
 	private Address address;
 	
-//	@JsonIgnore
+	@JsonIgnore
 	@OneToOne(mappedBy = "customer",cascade = CascadeType.ALL)
 	private Cart cart;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "customer" ,cascade = CascadeType.ALL)
 	private List<Order> orders;
 	
