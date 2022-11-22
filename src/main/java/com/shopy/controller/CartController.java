@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopy.exception.CartException;
+import com.shopy.exception.CustomerException;
 import com.shopy.exception.ProductException;
 import com.shopy.model.Cart;
 import com.shopy.service.CartService;
@@ -25,7 +26,7 @@ public class CartController {
 	private CartService cs;
 
 	@PostMapping("/add")
-	public ResponseEntity<Cart> addCart(@RequestBody Cart cart) {
+	public ResponseEntity<Cart> addCart(@RequestBody Cart cart) throws CustomerException{
 		Cart c=cs.addCart(cart);
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
@@ -54,7 +55,7 @@ public class CartController {
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/increaseQuantity/{cartId}/{productId}/{quantity}")
+	@PutMapping("/decreaseQuantity/{cartId}/{productId}/{quantity}")
 	public ResponseEntity<Cart> decreaseQuantity(@PathVariable("cartId") int cartId, @PathVariable("productId") int productId, @PathVariable("quantity") int quantity) throws CartException, ProductException {
 		Cart c=cs.decreaseQuantity(cartId, productId, quantity);
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);

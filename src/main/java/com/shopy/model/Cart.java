@@ -11,6 +11,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Data;
 
 @Data
@@ -24,7 +26,8 @@ public class Cart {
 	
 	private Integer totalPrice;
 	
-	@OneToOne
+	@JsonIgnore
+	@OneToOne(cascade = CascadeType.ALL)
 	private Customer customer;
 	
 	@OneToMany(cascade = CascadeType.ALL)

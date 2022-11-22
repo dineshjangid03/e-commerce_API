@@ -1,12 +1,13 @@
 package com.shopy.service;
 
 import com.shopy.exception.CartException;
+import com.shopy.exception.CustomerException;
 import com.shopy.exception.ProductException;
 import com.shopy.model.Cart;
 
 public interface CartService {
 	
-	public Cart addCart(Cart cart);
+	public Cart addCart(Cart cart)throws CustomerException;
 	
 	public Cart viewCart(int cartId)throws CartException;
 	
