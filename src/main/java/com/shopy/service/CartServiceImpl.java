@@ -37,6 +37,16 @@ public class CartServiceImpl implements CartService{
 		}
 		return total;
 	}
+	
+	public int cartTotalQuantity(List<Product>list) {
+		int total=0;
+		for(Product p:list) {
+			if(p.getQuantity()!=0) {
+				total+=p.getQuantity();
+			}
+		}
+		return total;
+	}
 
 	@Override
 	public Cart addCart(Cart cart) throws CustomerException{
@@ -89,6 +99,7 @@ public class CartServiceImpl implements CartService{
 		}
 		
 		cart.setTotalPrice(cartTotal(cart.getProducts()));
+		cart.setTotalItems(cartTotalQuantity(cart.getProducts()));
 		
 		return cr.save(cart);
 		
@@ -109,6 +120,7 @@ public class CartServiceImpl implements CartService{
 		}
 		
 		cart.setTotalPrice(cartTotal(cart.getProducts()));
+		cart.setTotalItems(cartTotalQuantity(cart.getProducts()));
 		
 		return cr.save(cart);
 	}
@@ -131,6 +143,7 @@ public class CartServiceImpl implements CartService{
 			}
 		});
 		cart.setTotalPrice(cartTotal(cart.getProducts()));
+		cart.setTotalItems(cartTotalQuantity(cart.getProducts()));
 		return cr.save(cart);
 	}
 
@@ -155,6 +168,7 @@ public class CartServiceImpl implements CartService{
 			}
 		});
 		cart.setTotalPrice(cartTotal(cart.getProducts()));
+		cart.setTotalItems(cartTotalQuantity(cart.getProducts()));
 		return cr.save(cart);
 	}
 
@@ -167,6 +181,7 @@ public class CartServiceImpl implements CartService{
 		Cart cart=cartOp.get();
 		cart.getProducts().clear();
 		cart.setTotalPrice(0);
+		cart.setTotalItems(0);
 		return cr.save(cart);
 	}
 
