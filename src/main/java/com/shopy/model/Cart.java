@@ -26,6 +26,8 @@ public class Cart {
 	
 	private Integer totalPrice;
 	
+	private Integer totalItems;
+	
 //	@JsonIgnore
 	@OneToOne(cascade = CascadeType.ALL)
 	private Customer customer;
