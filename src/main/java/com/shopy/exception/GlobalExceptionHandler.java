@@ -15,6 +15,30 @@ import com.shopy.dto.ExceptionDTO;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	
+	@ExceptionHandler(AdminException.class)
+	public ResponseEntity<ExceptionDTO> adminExceptionHandler(AdminException e, WebRequest wr){
+		
+		ExceptionDTO err=new ExceptionDTO();
+		err.setDateAndTime(LocalDateTime.now());
+		err.setMessage(e.getMessage());
+		err.setDesc(wr.getDescription(false));
+		
+		return new ResponseEntity<ExceptionDTO>(err, HttpStatus.BAD_REQUEST);
+		
+	}
+	
+	@ExceptionHandler(LoginException.class)
+	public ResponseEntity<ExceptionDTO> loginExceptionHandler(LoginException e, WebRequest wr){
+		
+		ExceptionDTO err=new ExceptionDTO();
+		err.setDateAndTime(LocalDateTime.now());
+		err.setMessage(e.getMessage());
+		err.setDesc(wr.getDescription(false));
+		
+		return new ResponseEntity<ExceptionDTO>(err, HttpStatus.BAD_REQUEST);
+		
+	}
+	
 	@ExceptionHandler(ProductException.class)
 	public ResponseEntity<ExceptionDTO> productExceptionHandler(ProductException e, WebRequest wr){
 		
