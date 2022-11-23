@@ -3,6 +3,7 @@ package com.shopy.model;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,8 +28,10 @@ public class Customer {
 	
 	private String customerName;
 	
+	@Column(unique = true)
 	private String mobile;
 	
+	@Column(unique = true)
 	private String email;
 	
 	private String password;

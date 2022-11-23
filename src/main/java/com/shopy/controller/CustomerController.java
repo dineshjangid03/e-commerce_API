@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopy.exception.CustomerException;
@@ -39,20 +40,20 @@ public class CustomerController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer) throws CustomerException {
-		Customer c=cs.updateCustomer(customer);
+	public ResponseEntity<Customer> updateCustomer(@RequestBody Customer customer, @RequestParam(required = false) String key ) throws CustomerException {
+		Customer c=cs.updateCustomer(customer, key);
 		return new ResponseEntity<Customer>(c,HttpStatus.ACCEPTED);
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Customer> deleteCustomer(@PathVariable("id") int customerId) throws CustomerException {
-		Customer c=cs.deleteCustomer(customerId);
+	public ResponseEntity<Customer> deleteCustomer(@PathVariable("id") int customerId, @RequestParam(required = false) String key) throws CustomerException {
+		Customer c=cs.deleteCustomer(customerId, key);
 		return new ResponseEntity<Customer>(c,HttpStatus.ACCEPTED);
 	}
 	
 	@GetMapping("/viewOrders/{id}")
-	public ResponseEntity<List<Order>> viewOrders(@PathVariable("id") int customerId) throws CustomerException {
-		List<Order>list=cs.viewOrders(customerId);
+	public ResponseEntity<List<Order>> viewOrders(@PathVariable("id") int customerId, @RequestParam(required = false) String key) throws CustomerException {
+		List<Order>list=cs.viewOrders(customerId, key);
 		return new ResponseEntity<List<Order>>(list,HttpStatus.ACCEPTED);
 	}
 

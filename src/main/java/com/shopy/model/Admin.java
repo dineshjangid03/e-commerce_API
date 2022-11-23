@@ -1,5 +1,6 @@
 package com.shopy.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,8 +16,10 @@ public class Admin {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer adminId;
 	
-	private String userName;
+	@Column(unique = true)
+	private String adminMobile;
 	
+	@Column(unique = true)
 	private String adminEmail;
 	
 	private String adminPassword;
