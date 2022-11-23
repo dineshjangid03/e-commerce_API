@@ -46,8 +46,10 @@ public class BillServiceImpl implements BillService{
 
 	@Override
 	public List<Bill> viewBills(LocalDate startDate, LocalDate endDate) throws BillException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Bill> list=br.billBetweenDate(startDate, endDate);
+		if(list.size()==0)
+			throw new BillException("bill not found between "+startDate+" and "+endDate);
+		return list;
 	}
 
 	@Override

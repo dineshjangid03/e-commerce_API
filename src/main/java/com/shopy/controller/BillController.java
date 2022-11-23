@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,7 +41,7 @@ public class BillController {
 	}
 	
 	@GetMapping("/view/{startDate}/{endDate}")
-	public ResponseEntity<List<Bill>> viewBills(@PathVariable("startDate") LocalDate startDate, @PathVariable("endDate") LocalDate endDate) throws BillException {
+	public ResponseEntity<List<Bill>> viewBills(@PathVariable("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @PathVariable("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) throws BillException {
 		List<Bill>b=bs.viewBills(startDate, endDate);
 		return new ResponseEntity<List<Bill>>(b,HttpStatus.ACCEPTED);
 	}

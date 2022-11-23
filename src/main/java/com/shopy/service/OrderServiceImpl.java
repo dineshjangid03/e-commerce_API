@@ -12,7 +12,6 @@ import com.shopy.exception.OrderException;
 import com.shopy.model.Cart;
 import com.shopy.model.Order;
 import com.shopy.repository.CartRepo;
-import com.shopy.repository.CustomerRepo;
 import com.shopy.repository.OrderRepo;
 
 @Service
@@ -24,8 +23,6 @@ public class OrderServiceImpl implements OrderService{
 	@Autowired
 	private CartRepo cartRepo;
 	
-//	@Autowired
-//	private CustomerRepo customerRepo;
 
 	@Override
 	public Order addOrder(Order order, int cartId) throws OrderException, CartException {
@@ -49,8 +46,10 @@ public class OrderServiceImpl implements OrderService{
 
 	@Override
 	public List<Order> viewOrdersByDate(LocalDate startDate, LocalDate endDate) throws OrderException {
-		// TODO Auto-generated method stub
-		return null;
+		List<Order>list=or.orderBetweenDate(startDate, endDate);
+		if(list.size()==0)
+			throw new OrderException("no order found between "+startDate+" and "+endDate);
+		return list;
 	}
 
 	@Override

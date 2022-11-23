@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,7 +41,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/viewOrdersByDate/{startDate}/{endDate}")
-	public ResponseEntity<List<Order>> viewOrdersByDate(@PathVariable("startDate") LocalDate startDate, @PathVariable("endDate") LocalDate endDate) throws OrderException {
+	public ResponseEntity<List<Order>> viewOrdersByDate(@PathVariable("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @PathVariable("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) throws OrderException {
 		List<Order> list=os.viewOrdersByDate(startDate, endDate);
 		return new ResponseEntity<List<Order>>(list,HttpStatus.ACCEPTED);
 	}
