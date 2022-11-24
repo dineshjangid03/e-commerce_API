@@ -2,6 +2,8 @@ package com.shopy.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +30,7 @@ public class CustomerController {
 	private CustomerService cs;
 	
 	@PostMapping("/register")
-	public ResponseEntity<Customer> registerCustomer(@RequestBody Customer customer) throws CustomerException {
+	public ResponseEntity<Customer> registerCustomer(@Valid @RequestBody Customer customer) throws CustomerException {
 		Customer c=cs.registerCustomer(customer);
 		return new ResponseEntity<Customer>(c,HttpStatus.ACCEPTED);
 	}

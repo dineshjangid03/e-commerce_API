@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,6 +32,7 @@ public class Customer {
 	@Column(unique = true)
 	private String mobile;
 	
+	@Email(message =  "Email is not in 'example@email.com' format")
 	@Column(unique = true)
 	private String email;
 	
