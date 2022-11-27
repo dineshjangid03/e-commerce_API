@@ -56,11 +56,16 @@ public class ProductController {
 		return new ResponseEntity<Product>(p,HttpStatus.ACCEPTED);
 	}
 	
+//	@GetMapping("/productByName/{name}")
+//	public ResponseEntity<List<Product>> productByName(@PathVariable("name") String name) throws ProductException {
+//		List<Product>list=ps.productByName(name);
+//		return new ResponseEntity<List<Product>>(list,HttpStatus.ACCEPTED);
+//	}
+	
 	@GetMapping("/productByName/{name}")
-	public ResponseEntity<List<Product>> productByName(@PathVariable("name") String name) throws ProductException {
-		List<Product>list=ps.productByName(name);
+	public ResponseEntity<List<Product>> productByNameLike(@PathVariable("name") String name) throws ProductException {
+		List<Product>list=ps.productByNameLike(name);
 		return new ResponseEntity<List<Product>>(list,HttpStatus.ACCEPTED);
 	}
-	
 
 }

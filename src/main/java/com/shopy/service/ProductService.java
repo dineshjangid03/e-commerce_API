@@ -20,4 +20,6 @@ public interface ProductService {
 	
 	public List<Product> productByName(String name)throws ProductException;
 	
+	public List<Product> productByNameLike(String name)throws ProductException;
+	
 }
