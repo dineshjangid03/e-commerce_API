@@ -25,6 +25,8 @@ public class Product {
 	@NotNull(message = "Name cannot be null")
 	private String productName;
 	
+	private String url;
+	
 	private Integer quantity;
 	
 	@NotNull(message = "price cannot be null")
@@ -32,7 +34,9 @@ public class Product {
 	
 	private Integer soldCount;
 	
-	private Integer rating;
+	private Double rating;
+	
+	private Integer ratingCount;
 	
 	private String description;
 	

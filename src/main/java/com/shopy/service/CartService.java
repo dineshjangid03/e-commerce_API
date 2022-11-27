@@ -11,16 +11,18 @@ public interface CartService {
 	
 	public Cart viewCart(int cartId,String key)throws CartException;
 	
-	public Cart addItemIntoCart(int cartId, int productId,String key)throws CartException,ProductException;
+	public Cart addItemIntoCart(int productId,String key)throws CartException,ProductException;
 	
-	public Cart removeItemFromCart(int cartId, int productId,String key)throws CartException,ProductException;
+	public Cart removeItemFromCart(int productId,String key)throws CartException,ProductException;
 	
-	public Cart increaseQuantity(int cartId, int productId, int quantity,String key)throws CartException,ProductException;
+	public Cart increaseQuantity(int productId, int quantity,String key)throws CartException,ProductException;
 	
-	public Cart decreaseQuantity(int cartId, int productId, int quantity,String key)throws CartException,ProductException;
+	public Cart decreaseQuantity(int productId, int quantity,String key)throws CartException,ProductException;
 	
-	public Cart clearCart(int cartId,String key)throws CartException;
+	public Cart clearCart(String key)throws CartException;
 	
 	public Cart deleteCart(int cartId,String key)throws CartException;
+	
+	public Cart cartByCustomerId(String key)throws CartException;
 	
 }

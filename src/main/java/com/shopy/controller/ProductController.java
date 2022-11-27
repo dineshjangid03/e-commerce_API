@@ -26,9 +26,9 @@ public class ProductController {
 	@Autowired
 	private ProductService ps;
 	
-	@PostMapping("/add/{categoryId}")
-	public ResponseEntity<Product> addProduct(@RequestBody Product product, @PathVariable("categoryId") int categoryId) throws ProductException, CategoryException {
-		Product p=ps.addProduct(product, categoryId);
+	@PostMapping("/add/{categoryId}/{uuidKey}")
+	public ResponseEntity<Product> addProduct(@RequestBody Product product, @PathVariable("categoryId") int categoryId, @PathVariable("uuidKey") String key) throws ProductException, CategoryException {
+		Product p=ps.addProduct(product, categoryId, key);
 		return new ResponseEntity<Product>(p,HttpStatus.ACCEPTED);
 	}
 	
@@ -44,15 +44,15 @@ public class ProductController {
 		return new ResponseEntity<List<Product>>(list,HttpStatus.ACCEPTED);
 	}
 	
-	@DeleteMapping("/delete/{productId}")
-	public ResponseEntity<Product> removeProduct(@PathVariable("productId") int productId) throws ProductException {
-		Product p=ps.removeProduct(productId);
+	@DeleteMapping("/delete/{productId}/{uuidKey}")
+	public ResponseEntity<Product> removeProduct(@PathVariable("productId") int productId, @PathVariable("uuidKey") String key) throws ProductException {
+		Product p=ps.removeProduct(productId, key);
 		return new ResponseEntity<Product>(p,HttpStatus.ACCEPTED);
 	}
 	
-	@PutMapping("/update")
-	public ResponseEntity<Product> updateProduct(@RequestBody Product product) throws ProductException {
-		Product p=ps.updateProduct(product);
+	@PutMapping("/update/{uuidKey}")
+	public ResponseEntity<Product> updateProduct(@RequestBody Product product, @PathVariable("uuidKey") String key) throws ProductException {
+		Product p=ps.updateProduct(product, key);
 		return new ResponseEntity<Product>(p,HttpStatus.ACCEPTED);
 	}
 	

@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import com.shopy.exception.CategoryException;
 import com.shopy.exception.ProductException;
 import com.shopy.model.Category;
+import com.shopy.model.CurrentAdminSession;
 import com.shopy.model.Product;
+import com.shopy.repository.AdminSessionRepo;
 import com.shopy.repository.CategoryRepo;
 import com.shopy.repository.ProductRepo;
 
@@ -21,9 +23,18 @@ public class ProductServiceImpl implements ProductService{
 	
 	@Autowired
 	private CategoryRepo crepo;
+	
+	@Autowired
+	private AdminSessionRepo adsr;
 
 	@Override
-	public Product addProduct(Product product, int categoryId) throws ProductException, CategoryException {
+	public Product addProduct(Product product, int categoryId, String key) throws ProductException, CategoryException {
+		
+		List<CurrentAdminSession> list=adsr.findByUuid(key);
+		
+		if(list.size()==0)
+			throw new ProductException("you don't have authority to add product");
+		
 		Optional<Category> cat=crepo.findById(categoryId);
 		if(!cat.isPresent()) {
 			throw new CategoryException("category not found with id "+categoryId);
@@ -33,9 +44,11 @@ public class ProductServiceImpl implements ProductService{
 		
 		product.setCategory(category);
 		
-		crepo.save(category);
+//		crepo.save(category);
 		
-		return product;
+		return pr.save(product);
+		
+//		return product;
 	}
 
 	@Override
@@ -57,7 +70,14 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public Product removeProduct(int productId) throws ProductException {
+	public Product removeProduct(int productId, String key) throws ProductException {
+		
+		List<CurrentAdminSession> list=adsr.findByUuid(key);
+		
+		if(list.size()==0)
+			throw new ProductException("you don't have authority to remove product");
+		
+		
 		Optional<Product>p=pr.findById(productId);
 		if(p.isPresent()) {
 			p.get().setCategory(null);
@@ -68,7 +88,14 @@ public class ProductServiceImpl implements ProductService{
 	}
 
 	@Override
-	public Product updateProduct(Product product) throws ProductException {
+	public Product updateProduct(Product product, String key) throws ProductException {
+		
+		List<CurrentAdminSession> list=adsr.findByUuid(key);
+		
+		if(list.size()==0)
+			throw new ProductException("you don't have authority to update product");
+		
+		
 		Optional<Product>p=pr.findById(product.getProductId());
 		if(p.isPresent()) {
 			Product pro=p.get();

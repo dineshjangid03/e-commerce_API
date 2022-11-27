@@ -24,54 +24,60 @@ public class CartController {
 	
 	@Autowired
 	private CartService cs;
-
-	@PostMapping("/add/{uuidKey}")
-	public ResponseEntity<Cart> addCart(@RequestBody Cart cart, @PathVariable("uuidKey") String key) throws CustomerException{
-		Cart c=cs.addCart(cart,key);
+	
+	@GetMapping("/view/{uuidKey}")
+	public ResponseEntity<Cart> viewCart(@PathVariable("uuidKey") String key) throws CartException {
+		Cart c=cs.cartByCustomerId(key);
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
 
-	@GetMapping("/view/{id}/{uuidKey}")
-	public ResponseEntity<Cart> viewCart(@PathVariable("id") int cartId, @PathVariable("uuidKey") String key) throws CartException {
-		Cart c=cs.viewCart(cartId,key);
+//	@PostMapping("/add/{uuidKey}")
+//	public ResponseEntity<Cart> addCart(@RequestBody Cart cart, @PathVariable("uuidKey") String key) throws CustomerException{
+//		Cart c=cs.addCart(cart,key);
+//		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
+//	}
+
+//	@GetMapping("/view/{id}/{uuidKey}")
+//	public ResponseEntity<Cart> viewCart(@PathVariable("id") int cartId, @PathVariable("uuidKey") String key) throws CartException {
+//		Cart c=cs.viewCart(cartId,key);
+//		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
+//	}
+
+	@PutMapping("/addItemIntoCart/{productId}/{uuidKey}")
+	public ResponseEntity<Cart> addItemIntoCart(@PathVariable("productId") int productId, @PathVariable("uuidKey") String key) throws CartException, ProductException {
+		Cart c=cs.addItemIntoCart(productId,key);
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/addItemIntoCart/{cartId}/{productId}/{uuidKey}")
-	public ResponseEntity<Cart> addItemIntoCart(@PathVariable("cartId") int cartId, @PathVariable("productId") int productId, @PathVariable("uuidKey") String key) throws CartException, ProductException {
-		Cart c=cs.addItemIntoCart(cartId, productId,key);
+	@PutMapping("/removeItemFromCart/{productId}/{uuidKey}")
+	public ResponseEntity<Cart> removeItemFromCart(@PathVariable("productId") int productId, @PathVariable("uuidKey") String key) throws CartException, ProductException {
+		Cart c=cs.removeItemFromCart(productId,key);
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/removeItemFromCart/{cartId}/{productId}/{uuidKey}")
-	public ResponseEntity<Cart> removeItemFromCart(@PathVariable("cartId") int cartId, @PathVariable("productId") int productId, @PathVariable("uuidKey") String key) throws CartException, ProductException {
-		Cart c=cs.removeItemFromCart(cartId, productId,key);
+	@PutMapping("/increaseQuantity/{productId}/{quantity}/{uuidKey}")
+	public ResponseEntity<Cart> increaseQuantity(@PathVariable("productId") int productId, @PathVariable("quantity") int quantity, @PathVariable("uuidKey") String key) throws CartException, ProductException {
+		Cart c=cs.increaseQuantity(productId, quantity,key);
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/increaseQuantity/{cartId}/{productId}/{quantity}/{uuidKey}")
-	public ResponseEntity<Cart> increaseQuantity(@PathVariable("cartId") int cartId, @PathVariable("productId") int productId, @PathVariable("quantity") int quantity, @PathVariable("uuidKey") String key) throws CartException, ProductException {
-		Cart c=cs.increaseQuantity(cartId, productId, quantity,key);
+	@PutMapping("/decreaseQuantity/{productId}/{quantity}/{uuidKey}")
+	public ResponseEntity<Cart> decreaseQuantity(@PathVariable("productId") int productId, @PathVariable("quantity") int quantity, @PathVariable("uuidKey") String key) throws CartException, ProductException {
+		Cart c=cs.decreaseQuantity(productId, quantity,key);
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/decreaseQuantity/{cartId}/{productId}/{quantity}/{uuidKey}")
-	public ResponseEntity<Cart> decreaseQuantity(@PathVariable("cartId") int cartId, @PathVariable("productId") int productId, @PathVariable("quantity") int quantity, @PathVariable("uuidKey") String key) throws CartException, ProductException {
-		Cart c=cs.decreaseQuantity(cartId, productId, quantity,key);
+	@PutMapping("/clearCart/{uuidKey}")
+	public ResponseEntity<Cart> clearCart(@PathVariable("uuidKey") String key) throws CartException {
+		Cart c=cs.clearCart(key);
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/clearCart/{cartId}/{uuidKey}")
-	public ResponseEntity<Cart> clearCart(@PathVariable("cartId") int cartId, @PathVariable("uuidKey") String key) throws CartException {
-		Cart c=cs.clearCart(cartId,key);
-		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
-	}
-
-	@DeleteMapping("/deleteCart/{cartId}/{uuidKey}")
-	public ResponseEntity<Cart> deleteCart(@PathVariable("cartId") int cartId, @PathVariable("uuidKey") String key) throws CartException {
-		Cart c=cs.deleteCart(cartId,key);
-		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
-	}
+//	@DeleteMapping("/deleteCart/{cartId}/{uuidKey}")
+//	public ResponseEntity<Cart> deleteCart(@PathVariable("cartId") int cartId, @PathVariable("uuidKey") String key) throws CartException {
+//		Cart c=cs.deleteCart(cartId,key);
+//		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
+//	}
 
 
 }

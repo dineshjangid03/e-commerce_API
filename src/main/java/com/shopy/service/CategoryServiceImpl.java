@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopy.exception.CategoryException;
+import com.shopy.exception.ProductException;
 import com.shopy.model.Category;
+import com.shopy.model.CurrentAdminSession;
 import com.shopy.model.Product;
+import com.shopy.repository.AdminSessionRepo;
 import com.shopy.repository.CategoryRepo;
 
 @Service
@@ -16,9 +19,24 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	@Autowired
 	private CategoryRepo cr;
+	
+	@Autowired
+	private AdminSessionRepo adsrepo;
 
 	@Override
-	public Category addCategory(Category category) throws CategoryException {
+	public Category addCategory(Category category, String key) throws CategoryException {
+
+		List<CurrentAdminSession> list=adsrepo.findByUuid(key);
+		
+		if(list.size()==0)
+			throw new CategoryException("you don't have authority to add category");
+		
+		List<Category> cat=cr.findByName(category.getName());
+		
+		if(cat.size()!=0) {
+			throw new CategoryException("category already registered with this name id is "+cat.get(0).getCategoryId());
+		}
+		
 		return cr.save(category);
 	}
 
@@ -32,7 +50,13 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public Category deleteCategory(int categoryId) throws CategoryException {
+	public Category deleteCategory(int categoryId, String key) throws CategoryException {
+
+		List<CurrentAdminSession> list=adsrepo.findByUuid(key);
+		
+		if(list.size()==0)
+			throw new CategoryException("you don't have authority to delete category");
+		
 		Optional<Category> c=cr.findById(categoryId);
 		if(c.isPresent()) {
 			cr.delete(c.get());
