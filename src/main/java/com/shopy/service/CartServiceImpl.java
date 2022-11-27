@@ -98,7 +98,7 @@ public class CartServiceImpl implements CartService{
 	}
 
 	@Override
-	public Cart addItemIntoCart(int cartId, int productId,String key) throws CartException, ProductException {
+	public Cart addItemIntoCart(int productId,String key) throws CartException, ProductException {
 		
 		List<CurrentUserSession>cUser=usrRepo.findByUuid(key);
 		if(cUser.size()==0)
@@ -106,19 +106,22 @@ public class CartServiceImpl implements CartService{
 		
 		CurrentUserSession currentUser=cUser.get(0);
 		
-		Optional<Cart>cartOp=cr.findById(cartId);
+		Cart cart=cr.findByCustomerId(currentUser.getUserId());
+		
+//		Optional<Cart>cartOp=cr.findById(cartId);
+//		if(cartOp.isEmpty()) {
+//			throw new CartException("cart not found with id "+cartId);
+//		}
+		
 		Optional<Product>pro=prepo.findById(productId);
-		if(cartOp.isEmpty()) {
-			throw new CartException("cart not found with id "+cartId);
-		}
 		if(pro.isEmpty()) {
 			throw new ProductException("product mot foumd with id "+productId);
 		}
-		Cart cart=cartOp.get();
+		
 		Product product=pro.get();
 		
-		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
-			throw new CartException("user mismatch please try again");
+//		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
+//			throw new CartException("user mismatch please try again");
 
 		boolean flag=true;
 		for(Product p:cart.getProducts()) {
@@ -140,7 +143,7 @@ public class CartServiceImpl implements CartService{
 	}
 
 	@Override
-	public Cart removeItemFromCart(int cartId, int productId,String key) throws CartException, ProductException {
+	public Cart removeItemFromCart(int productId, String key) throws CartException, ProductException {
 		
 		List<CurrentUserSession>cUser=usrRepo.findByUuid(key);
 		if(cUser.size()==0)
@@ -148,20 +151,21 @@ public class CartServiceImpl implements CartService{
 		
 		CurrentUserSession currentUser=cUser.get(0);
 		
-		Optional<Cart>cartOp=cr.findById(cartId);
-		if(cartOp.isEmpty()) {
-			throw new CartException("cart not found with id "+cartId);
-		}
-		Cart cart=cartOp.get();
+//		Optional<Cart>cartOp=cr.findById(cartId);
+//		if(cartOp.isEmpty()) {
+//			throw new CartException("cart not found with id "+cartId);
+//		}
 		
-		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
-			throw new CartException("user mismatch please try again");
+		Cart cart=cr.findByCustomerId(currentUser.getUserId());
+		
+//		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
+//			throw new CartException("user mismatch please try again");
 
 		
 		boolean flag=cart.getProducts().removeIf(p-> p.getProductId()==productId);
 		
 		if(!flag) {
-			throw new ProductException("product "+productId+" is not there in cart "+cartId);
+			throw new ProductException("product "+productId+" is not there in cart "+cart.getCartId());
 		}
 		
 		cart.setTotalPrice(cartTotal(cart.getProducts()));
@@ -171,7 +175,7 @@ public class CartServiceImpl implements CartService{
 	}
 
 	@Override
-	public Cart increaseQuantity(int cartId, int productId, int quantity,String key) throws CartException, ProductException {
+	public Cart increaseQuantity(int productId, int quantity,String key) throws CartException, ProductException {
 		
 
 		List<CurrentUserSession>cUser=usrRepo.findByUuid(key);
@@ -180,15 +184,18 @@ public class CartServiceImpl implements CartService{
 		
 		CurrentUserSession currentUser=cUser.get(0);
 		
-		Optional<Cart>cartOp=cr.findById(cartId);
+//		Optional<Cart>cartOp=cr.findById(cartId);
+		
+//		if(cartOp.isEmpty()) {
+//			throw new CartException("cart not found with id "+cartId);
+//		}
+		
 		Optional<Product>pro=prepo.findById(productId);
-		if(cartOp.isEmpty()) {
-			throw new CartException("cart not found with id "+cartId);
-		}
 		if(pro.isEmpty()) {
 			throw new ProductException("product mot foumd with id "+productId);
 		}
-		Cart cart=cartOp.get();
+		
+		Cart cart=cr.findByCustomerId(currentUser.getUserId());
 		
 		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
 			throw new CartException("user mismatch please try again");
@@ -205,7 +212,7 @@ public class CartServiceImpl implements CartService{
 	}
 
 	@Override
-	public Cart decreaseQuantity(int cartId, int productId, int quantity,String key) throws CartException, ProductException {
+	public Cart decreaseQuantity(int productId, int quantity,String key) throws CartException, ProductException {
 		
 		List<CurrentUserSession>cUser=usrRepo.findByUuid(key);
 		if(cUser.size()==0)
@@ -213,18 +220,18 @@ public class CartServiceImpl implements CartService{
 		
 		CurrentUserSession currentUser=cUser.get(0);
 		
-		Optional<Cart>cartOp=cr.findById(cartId);
+//		Optional<Cart>cartOp=cr.findById(cartId);
 		Optional<Product>pro=prepo.findById(productId);
-		if(cartOp.isEmpty()) {
-			throw new CartException("cart not found with id "+cartId);
-		}
+//		if(cartOp.isEmpty()) {
+//			throw new CartException("cart not found with id "+cartId);
+//		}
 		if(pro.isEmpty()) {
 			throw new ProductException("product not found with id "+productId);
 		}
-		Cart cart=cartOp.get();
+		Cart cart=cr.findByCustomerId(currentUser.getUserId());
 		
-		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
-			throw new CartException("user mismatch please try again");
+//		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
+//			throw new CartException("user mismatch please try again");
 
 		
 		cart.getProducts().forEach(p->{
@@ -241,7 +248,7 @@ public class CartServiceImpl implements CartService{
 	}
 
 	@Override
-	public Cart clearCart(int cartId,String key) throws CartException {
+	public Cart clearCart(String key) throws CartException {
 		
 		List<CurrentUserSession>cUser=usrRepo.findByUuid(key);
 		if(cUser.size()==0)
@@ -250,14 +257,14 @@ public class CartServiceImpl implements CartService{
 		CurrentUserSession currentUser=cUser.get(0);
 		
 		
-		Optional<Cart>cartOp=cr.findById(cartId);
-		if(cartOp.isEmpty()) {
-			throw new CartException("cart not found with id "+cartId);
-		}
-		Cart cart=cartOp.get();
+//		Optional<Cart>cartOp=cr.findById(cartId);
+//		if(cartOp.isEmpty()) {
+//			throw new CartException("cart not found with id "+cartId);
+//		}
+		Cart cart=cr.findByCustomerId(currentUser.getUserId());
 		
-		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
-			throw new CartException("user mismatch please try again");
+//		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
+//			throw new CartException("user mismatch please try again");
 
 		cart.getProducts().clear();
 		cart.setTotalPrice(0);
@@ -282,6 +289,17 @@ public class CartServiceImpl implements CartService{
 
 		cr.delete(cartOp.get());
 		return cartOp.get();
+	}
+
+	@Override
+	public Cart cartByCustomerId(String key) throws CartException {
+		List<CurrentUserSession>cUser=usrRepo.findByUuid(key);
+		if(cUser.size()==0)
+			throw new CartException("you are not logged in please log in");
+		
+		CurrentUserSession currentUser=cUser.get(0);
+		
+		return cr.findByCustomerId(currentUser.getUserId());
 	}
 
 }

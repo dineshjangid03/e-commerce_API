@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopy.exception.LoginException;
+import com.shopy.model.CurrentAdminSession;
 import com.shopy.model.Login;
 import com.shopy.service.AdminLogin;
 
@@ -21,9 +22,9 @@ public class AdminLoginController {
 	private AdminLogin al;
 	
 	@PostMapping("/login")
-	public ResponseEntity<String> adminLogin(@RequestBody Login dto) throws LoginException{
-		String res=al.adminLog(dto);
-		return new ResponseEntity<String>(res,HttpStatus.ACCEPTED);
+	public ResponseEntity<CurrentAdminSession> adminLogin(@RequestBody Login dto) throws LoginException{
+		CurrentAdminSession res=al.adminLog(dto);
+		return new ResponseEntity<CurrentAdminSession>(res,HttpStatus.ACCEPTED);
 	}
 	
 	@PostMapping("/logout")

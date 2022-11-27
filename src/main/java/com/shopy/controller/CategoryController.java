@@ -25,9 +25,9 @@ public class CategoryController {
 	@Autowired
 	private CategoryService cs;
 	
-	@PostMapping("/add")
-	public ResponseEntity<Category> addCategory(@RequestBody Category category) throws CategoryException {
-		Category c=cs.addCategory(category);
+	@PostMapping("/add/{uuidKey}")
+	public ResponseEntity<Category> addCategory(@RequestBody Category category, @PathVariable("uuidKey") String key) throws CategoryException {
+		Category c=cs.addCategory(category,key);
 		return new ResponseEntity<Category>(c,HttpStatus.ACCEPTED);
 	}
 	
@@ -38,9 +38,9 @@ public class CategoryController {
 		
 	}
 	
-	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Category> deleteCategory(@PathVariable("id") int categoryId) throws CategoryException {
-		Category c=cs.deleteCategory(categoryId);
+	@DeleteMapping("/delete/{id}/{uuidKey}")
+	public ResponseEntity<Category> deleteCategory(@PathVariable("id") int categoryId, @PathVariable("uuidKey") String key) throws CategoryException {
+		Category c=cs.deleteCategory(categoryId,key);
 		return new ResponseEntity<Category>(c,HttpStatus.ACCEPTED);
 	}
 	

@@ -26,7 +26,7 @@ public class AdminLoginImpl implements AdminLogin{
 	private AdminRepo arl;
 
 	@Override
-	public String adminLog(Login dto) throws LoginException {
+	public CurrentAdminSession adminLog(Login dto) throws LoginException {
 		List<Admin>temp=arl.findByAdminMobile(dto.getMobile());
 		if(temp.size()==0)
 			throw new LoginException("please enter valid mobile number");
@@ -35,7 +35,12 @@ public class AdminLoginImpl implements AdminLogin{
 		
 		Optional<CurrentAdminSession> validation=asr.findById(admin.getAdminId());
 		if(validation.isPresent()) {
-			throw new LoginException("admin already logged in with this number");
+			
+			if(admin.getAdminPassword().equals(dto.getPassword())) {
+				return validation.get();
+			}
+			
+			throw new LoginException("please enter valid password");
 		}
 		
 		if(admin.getAdminPassword().equals(dto.getPassword())) {
@@ -45,7 +50,7 @@ public class AdminLoginImpl implements AdminLogin{
 			cas.setUserId(admin.getAdminId());
 			cas.setUuid(key);
 			asr.save(cas);
-			return cas.toString();
+			return cas;
 		}
 		throw new LoginException("please enter valid password");
 	}

@@ -7,9 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopy.exception.CustomerException;
+import com.shopy.model.Cart;
 import com.shopy.model.CurrentUserSession;
 import com.shopy.model.Customer;
 import com.shopy.model.Order;
+import com.shopy.repository.CartRepo;
 import com.shopy.repository.CustomerRepo;
 import com.shopy.repository.UserSessionRepo;
 
@@ -21,10 +23,20 @@ public class CustomerServiceImpl implements CustomerService{
 	
 	@Autowired
 	private UserSessionRepo usRepo;
+	
+	@Autowired
+	private CartRepo cartR;
 
 	@Override
 	public Customer registerCustomer(Customer customer) throws CustomerException {
-		return cr.save(customer);
+		
+		Customer saved=cr.save(customer);
+		Cart cart=new Cart();
+		cart.setCustomer(saved);
+		cartR.save(cart);
+		customer.setCart(cart);
+		return saved;
+		
 	}
 
 	@Override

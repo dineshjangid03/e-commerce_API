@@ -9,11 +9,11 @@ import com.shopy.model.Product;
 
 public interface CategoryService {
 	
-	public Category addCategory(Category category)throws CategoryException;
+	public Category addCategory(Category category, String key)throws CategoryException;
 	
 	public Category viewCategory(int categoryId)throws CategoryException;
 	
-	public Category deleteCategory(int categoryId)throws CategoryException;
+	public Category deleteCategory(int categoryId, String key)throws CategoryException;
 	
 	public List<Category> allCategory()throws CategoryException;
 	
