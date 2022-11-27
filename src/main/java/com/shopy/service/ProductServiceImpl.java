@@ -100,17 +100,20 @@ public class ProductServiceImpl implements ProductService{
 		if(p.isPresent()) {
 			Product pro=p.get();
 			
-			if(product.getDescription()!=null)
+			if(product.getDescription()!="")
 				pro.setDescription(product.getDescription());
 			
 			if(product.getPrice()!=null)
 				pro.setPrice(product.getPrice());
 			
-			if(product.getProductName()!=null)
+			if(product.getProductName()!="")
 				pro.setProductName(product.getProductName());
 			
 			if(product.getQuantity()!=null)
 				pro.setQuantity(product.getQuantity());
+			
+			if(product.getUrl()!="")
+				pro.setUrl(product.getUrl());
 			
 			return pr.save(pro);
 		}
@@ -120,6 +123,15 @@ public class ProductServiceImpl implements ProductService{
 	@Override
 	public List<Product> productByName(String name) throws ProductException {
 		List<Product>list=pr.findByProductName(name);
+		if(list.size()==0) {
+			throw new ProductException("product not found with name "+name);
+		}
+		return list;
+	}
+
+	@Override
+	public List<Product> productByNameLike(String name) throws ProductException {
+		List<Product>list=pr.findByProductNameLike(name);
 		if(list.size()==0) {
 			throw new ProductException("product not found with name "+name);
 		}
