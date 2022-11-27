@@ -16,5 +16,7 @@ public interface ProductRepo extends JpaRepository<Product, Integer>{
 	
 	@Query("SELECT p FROM Product p WHERE p.productName LIKE %:title%")
 	public List<Product> findByProductNameLike(@Param("title") String likePattern);
+	
+	public List<Product> findTop5ByOrderBySoldCountDesc();
 
 }

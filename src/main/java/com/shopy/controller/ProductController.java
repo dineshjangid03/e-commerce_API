@@ -67,5 +67,11 @@ public class ProductController {
 		List<Product>list=ps.productByNameLike(name);
 		return new ResponseEntity<List<Product>>(list,HttpStatus.ACCEPTED);
 	}
+	
+	@GetMapping("/top5")
+	public ResponseEntity<List<Product>> top5() throws ProductException {
+		List<Product>list=ps.top5();
+		return new ResponseEntity<List<Product>>(list,HttpStatus.ACCEPTED);
+	}
 
 }

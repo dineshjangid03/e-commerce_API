@@ -22,4 +22,6 @@ public interface ProductService {
 	
 	public List<Product> productByNameLike(String name)throws ProductException;
 	
+	public List<Product> top5()throws ProductException;
+	
 }

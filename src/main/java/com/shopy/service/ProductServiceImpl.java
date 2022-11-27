@@ -138,4 +138,13 @@ public class ProductServiceImpl implements ProductService{
 		return list;
 	}
 
+	@Override
+	public List<Product> top5() throws ProductException {
+		List<Product>list=pr.findTop5ByOrderBySoldCountDesc();
+		if(list.size()==0) {
+			throw new ProductException("product not found");
+		}
+		return list;
+	}
+
 }
