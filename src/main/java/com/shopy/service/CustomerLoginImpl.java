@@ -26,7 +26,7 @@ public class CustomerLoginImpl implements CustomerLogin{
 	private CustomerRepo crl;
 	
 	@Override
-	public String logIntoAccount(Login dto) throws LoginException {
+	public CurrentUserSession logIntoAccount(Login dto) throws LoginException {
 		List<Customer> list=crl.findByMobile(dto.getMobile());
 		
 		if(list.size()==0) {
@@ -37,6 +37,9 @@ public class CustomerLoginImpl implements CustomerLogin{
 		Optional<CurrentUserSession> validation=usr.findById(customer.getCustomerId());
 		
 		if(validation.isPresent()) {
+			if(customer.getPassword().equals(dto.getPassword())) {
+				return validation.get();
+			}
 			throw new LoginException("user already logged in eith this number");
 		}
 		
@@ -47,7 +50,7 @@ public class CustomerLoginImpl implements CustomerLogin{
 			cus.setUuid(key);
 			cus.setLocalDateTime(LocalDateTime.now());
 			usr.save(cus);
-			return cus.toString();
+			return cus;
 		}
 		
 		throw new LoginException("please enter valid password");

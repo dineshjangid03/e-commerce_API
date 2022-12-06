@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.shopy.exception.LoginException;
+import com.shopy.model.CurrentUserSession;
 import com.shopy.model.Login;
 import com.shopy.service.CustomerLogin;
 
@@ -21,9 +22,9 @@ public class UserLoginController {
 	private CustomerLogin cl;
 	
 	@PostMapping("/login")
-	public ResponseEntity<String> userLogin(@RequestBody Login dto) throws LoginException{
-		String res=cl.logIntoAccount(dto);
-		return new ResponseEntity<String>(res,HttpStatus.ACCEPTED);
+	public ResponseEntity<CurrentUserSession> userLogin(@RequestBody Login dto) throws LoginException{
+		CurrentUserSession res=cl.logIntoAccount(dto);
+		return new ResponseEntity<CurrentUserSession>(res,HttpStatus.ACCEPTED);
 	}
 	
 	@PostMapping("/logout")
