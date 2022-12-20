@@ -35,9 +35,9 @@ public class CustomerController {
 		return new ResponseEntity<Customer>(c,HttpStatus.ACCEPTED);
 	}
 	
-	@GetMapping("/view/{id}")
-	public ResponseEntity<Customer> viewCustomer(@PathVariable("id") int customerId) throws CustomerException {
-		Customer c=cs.viewCustomer(customerId);
+	@GetMapping("/view/{uuid}")
+	public ResponseEntity<Customer> viewCustomer(@PathVariable("uuid") String uuid) throws CustomerException {
+		Customer c=cs.viewCustomer(uuid);
 		return new ResponseEntity<Customer>(c,HttpStatus.ACCEPTED);
 	}
 	
@@ -53,9 +53,9 @@ public class CustomerController {
 		return new ResponseEntity<Customer>(c,HttpStatus.ACCEPTED);
 	}
 	
-	@GetMapping("/viewOrders/{id}")
-	public ResponseEntity<List<Order>> viewOrders(@PathVariable("id") int customerId, @RequestParam(required = false) String key) throws CustomerException {
-		List<Order>list=cs.viewOrders(customerId, key);
+	@GetMapping("/viewOrders/{uuid}")
+	public ResponseEntity<List<Order>> viewOrders(@PathVariable("uuid") String uuid) throws CustomerException {
+		List<Order>list=cs.viewOrders(uuid);
 		return new ResponseEntity<List<Order>>(list,HttpStatus.ACCEPTED);
 	}
 

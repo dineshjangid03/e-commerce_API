@@ -15,9 +15,9 @@ public interface CartService {
 	
 	public Cart removeItemFromCart(int productId,String key)throws CartException,ProductException;
 	
-	public Cart increaseQuantity(int productId, int quantity,String key)throws CartException,ProductException;
+	public Cart increaseQuantity(int productId, String key)throws CartException,ProductException;
 	
-	public Cart decreaseQuantity(int productId, int quantity,String key)throws CartException,ProductException;
+	public Cart decreaseQuantity(int productId, String key)throws CartException,ProductException;
 	
 	public Cart clearCart(String key)throws CartException;
 	

@@ -28,9 +28,9 @@ public class OrderController {
 	@Autowired
 	private OrderService os;
 	
-	@PostMapping("/addOrder/{cartId}")
-	public ResponseEntity<Order> addOrder(@RequestBody Order order, @PathVariable("cartId") int cartId) throws OrderException, CartException {
-		Order o=os.addOrder(order, cartId);
+	@PostMapping("/addOrder/{uuid}")
+	public ResponseEntity<Order> addOrder(@PathVariable("uuid") String uuid) throws OrderException, CartException {
+		Order o=os.addOrder(uuid);
 		return new ResponseEntity<Order>(o,HttpStatus.ACCEPTED);
 	}
 
