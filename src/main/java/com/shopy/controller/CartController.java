@@ -55,15 +55,15 @@ public class CartController {
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/increaseQuantity/{productId}/{quantity}/{uuidKey}")
-	public ResponseEntity<Cart> increaseQuantity(@PathVariable("productId") int productId, @PathVariable("quantity") int quantity, @PathVariable("uuidKey") String key) throws CartException, ProductException {
-		Cart c=cs.increaseQuantity(productId, quantity,key);
+	@PutMapping("/increaseQuantity/{productId}/{uuidKey}")
+	public ResponseEntity<Cart> increaseQuantity(@PathVariable("productId") int productId, @PathVariable("uuidKey") String key) throws CartException, ProductException {
+		Cart c=cs.increaseQuantity(productId, key);
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
 
-	@PutMapping("/decreaseQuantity/{productId}/{quantity}/{uuidKey}")
-	public ResponseEntity<Cart> decreaseQuantity(@PathVariable("productId") int productId, @PathVariable("quantity") int quantity, @PathVariable("uuidKey") String key) throws CartException, ProductException {
-		Cart c=cs.decreaseQuantity(productId, quantity,key);
+	@PutMapping("/decreaseQuantity/{productId}/{uuidKey}")
+	public ResponseEntity<Cart> decreaseQuantity(@PathVariable("productId") int productId, @PathVariable("uuidKey") String key) throws CartException, ProductException {
+		Cart c=cs.decreaseQuantity(productId, key);
 		return new ResponseEntity<Cart>(c,HttpStatus.ACCEPTED);
 	}
 

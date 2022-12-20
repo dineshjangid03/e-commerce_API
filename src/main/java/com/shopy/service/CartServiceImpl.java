@@ -175,7 +175,7 @@ public class CartServiceImpl implements CartService{
 	}
 
 	@Override
-	public Cart increaseQuantity(int productId, int quantity,String key) throws CartException, ProductException {
+	public Cart increaseQuantity(int productId,String key) throws CartException, ProductException {
 		
 
 		List<CurrentUserSession>cUser=usrRepo.findByUuid(key);
@@ -203,7 +203,7 @@ public class CartServiceImpl implements CartService{
 		
 		cart.getProducts().forEach(p->{
 			if(p.getProductId()==productId) {
-				p.setQuantity(p.getQuantity()+quantity);
+				p.setQuantity(p.getQuantity()+1);
 			}
 		});
 		cart.setTotalPrice(cartTotal(cart.getProducts()));
@@ -212,7 +212,7 @@ public class CartServiceImpl implements CartService{
 	}
 
 	@Override
-	public Cart decreaseQuantity(int productId, int quantity,String key) throws CartException, ProductException {
+	public Cart decreaseQuantity(int productId, String key) throws CartException, ProductException {
 		
 		List<CurrentUserSession>cUser=usrRepo.findByUuid(key);
 		if(cUser.size()==0)
@@ -236,9 +236,9 @@ public class CartServiceImpl implements CartService{
 		
 		cart.getProducts().forEach(p->{
 			if(p.getProductId()==productId) {
-				p.setQuantity(p.getQuantity()-quantity);
-				if(p.getQuantity()<0) {
-					p.setQuantity(0);
+				p.setQuantity(p.getQuantity()-1);
+				if(p.getQuantity()<1) {
+					p.setQuantity(1);
 				}
 			}
 		});

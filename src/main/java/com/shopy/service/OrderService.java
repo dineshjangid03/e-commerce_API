@@ -9,7 +9,7 @@ import com.shopy.model.Order;
 
 public interface OrderService {
 	
-	public Order addOrder(Order order, int cartId)throws OrderException,CartException;
+	public Order addOrder(String uuid)throws OrderException,CartException;
 	
 	public Order viewOrder(int orderId)throws OrderException;
 	

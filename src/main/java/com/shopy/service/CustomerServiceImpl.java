@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.shopy.exception.CustomerException;
+import com.shopy.model.Address;
 import com.shopy.model.Cart;
 import com.shopy.model.CurrentUserSession;
 import com.shopy.model.Customer;
@@ -40,13 +41,17 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public Customer viewCustomer(int customerId) throws CustomerException {
-		Optional<Customer> c=cr.findById(customerId);
+	public Customer viewCustomer(String key) throws CustomerException {
+		List<CurrentUserSession> extCu=usRepo.findByUuid(key);
+		if(extCu.size()==0)
+			throw new CustomerException("key is not valid");
+		
+		Optional<Customer> c=cr.findById(extCu.get(0).getUserId());
 		
 		if(c.isPresent()) {
 			return c.get();
 		}
-		throw new CustomerException("user not found with id : "+customerId);
+		throw new CustomerException("user not found");
 	}
 
 	@Override
@@ -55,14 +60,47 @@ public class CustomerServiceImpl implements CustomerService{
 		if(extCu.size()==0)
 			throw new CustomerException("key is not valid");
 		
-		if(extCu.get(0).getUserId()!=customer.getCustomerId())
-			throw new CustomerException("invalid customer detail, please login first");
+//		if(extCu.get(0).getUserId()!=customer.getCustomerId())
+//			throw new CustomerException("invalid customer detail, please login first");
+//		
+		Optional<Customer> c=cr.findById(extCu.get(0).getUserId());
 		
-		Optional<Customer> c=cr.findById(customer.getCustomerId());
-		if(c.isPresent()) {
-			return cr.save(customer);
+		if(!c.isPresent()) {
+			throw new CustomerException("user not found");
 		}
-		throw new CustomerException("user not found with id : "+customer.getCustomerId());
+		
+		Customer pre=c.get();
+		Address preA=pre.getAddress();
+		
+		Address newA=customer.getAddress();
+		if(newA.getCity()!=null) {
+			preA.setCity(newA.getCity());
+		}
+		if(newA.getCountry()!=null) {
+			preA.setCountry(newA.getCountry());		
+		}
+		if(newA.getPincode()!=null) {
+			preA.setPincode(newA.getPincode());
+		}
+		if(newA.getState()!=null) {
+			preA.setState(newA.getState());
+		}
+		
+		if(customer.getCustomerName()!=null){
+			pre.setCustomerName(customer.getCustomerName());
+		}
+		if(customer.getEmail()!=null){
+			pre.setEmail(customer.getEmail());
+		}
+		if(customer.getMobile()!=null){
+			pre.setMobile(customer.getMobile());
+		}
+		if(customer.getPassword()!=null){
+			pre.setPassword(customer.getPassword());
+		}
+		
+		pre.setAddress(preA);
+		return cr.save(pre);
 	}
 
 	@Override
@@ -84,15 +122,12 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public List<Order> viewOrders(int customerId, String key) throws CustomerException {
+	public List<Order> viewOrders(String key) throws CustomerException {
 		List<CurrentUserSession> extCu=usRepo.findByUuid(key);
 		if(extCu.size()==0)
 			throw new CustomerException("key is not valid");
-		
-		if(extCu.get(0).getUserId()!=customerId)
-			throw new CustomerException("invalid customer id please fill valid id");
-		
-		Optional<Customer> c=cr.findById(customerId);
+
+		Optional<Customer> c=cr.findById(extCu.get(0).getUserId());
 		if(c.isPresent()) {
 			List<Order>list=c.get().getOrders();
 			if(list.size()==0) {
@@ -100,7 +135,7 @@ public class CustomerServiceImpl implements CustomerService{
 			}
 			return list;
 		}
-		throw new CustomerException("user not found with id : "+customerId);
+		throw new CustomerException("user not found");
 	}
 
 }
