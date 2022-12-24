@@ -1,5 +1,6 @@
 package com.shopy.service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -133,6 +134,7 @@ public class CustomerServiceImpl implements CustomerService{
 			if(list.size()==0) {
 				throw new CustomerException("order list is empty");
 			}
+			Collections.reverse(list);
 			return list;
 		}
 		throw new CustomerException("user not found");

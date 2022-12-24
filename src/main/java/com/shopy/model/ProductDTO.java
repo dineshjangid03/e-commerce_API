@@ -23,6 +23,8 @@ public class ProductDTO {
 	
 	private Integer quantity;
 	
+	private Integer availableProduct;
+	
 	private Integer price;
 	
 	private String description;

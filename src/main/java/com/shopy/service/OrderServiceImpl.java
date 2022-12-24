@@ -3,12 +3,14 @@ package com.shopy.service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.shopy.exception.AdminException;
 import com.shopy.exception.CartException;
 import com.shopy.exception.CustomerException;
 import com.shopy.exception.OrderException;
@@ -21,6 +23,7 @@ import com.shopy.model.ProductDTO;
 import com.shopy.repository.CartRepo;
 import com.shopy.repository.CustomerRepo;
 import com.shopy.repository.OrderRepo;
+import com.shopy.repository.ProductRepo;
 import com.shopy.repository.UserSessionRepo;
 
 @Service
@@ -37,6 +40,9 @@ public class OrderServiceImpl implements OrderService{
 	
 	@Autowired
 	private CustomerRepo cr;
+	
+	@Autowired
+	private ProductRepo prepo;
 	
 
 	@Override
@@ -61,6 +67,10 @@ public class OrderServiceImpl implements OrderService{
 		
 		Cart cart=car.get();
 		
+		if(cart.getProducts().size()==0) {
+			throw new OrderException("please add product in cart");
+		}
+		
 		Order order=new Order();
 		
 		order.setCustomer(customer);
@@ -68,31 +78,34 @@ public class OrderServiceImpl implements OrderService{
 		order.setOrderTime(LocalTime.now());
 		order.setStatus("pending");
 		
-		List<ProductDTO>products=new ArrayList<>();
+		List<ProductDTO>temp=new ArrayList<>();
 		
-		for(Product p:cart.getProducts()) {
-			ProductDTO pd=new ProductDTO();
-			pd.setDescription(p.getDescription());
-			pd.setPrice(p.getPrice());
-			pd.setProductId(p.getProductId());
-			pd.setProductName(p.getProductName());
-			pd.setQuantity(p.getQuantity());
-			pd.setUrl(p.getUrl());
-			products.add(pd);
+		for(ProductDTO p:cart.getProducts()) {
+			if(p.getAvailableProduct()<p.getQuantity()) {
+				throw new OrderException(p.getProductName()+" out of stock");
+			}
+			temp.add(p);
 		}
-		order.setProducts(products);
 		
-		List<Product>list=cart.getProducts();
+		order.setProducts(temp);
 		
-		list.forEach(p-> p.setSoldCount(p.getSoldCount()+p.getQuantity()));
+		List<ProductDTO>list=cart.getProducts();
 		
-		cartRepo.save(cart);
-		list.clear();
+		list.forEach(p->{
+			Product pro=prepo.findById(p.getProductId()).get();
+			pro.setSoldCount(pro.getSoldCount()+p.getQuantity());
+			pro.setQuantity(pro.getQuantity()-p.getQuantity());
+			prepo.save(pro);
+		});
+		
+		Order o=or.save(order);
+		
+		cart.getProducts().clear();
 		cart.setTotalItems(0);
 		cart.setTotalPrice(0);
 		cartRepo.save(cart);
 		
-		return or.save(order);
+		return o;
 	}
 
 	@Override
@@ -119,7 +132,7 @@ public class OrderServiceImpl implements OrderService{
 			throw new OrderException("order not found with id "+orderId);
 		}
 		ord.get().setStatus(status);
-		return ord.get();
+		return or.save(ord.get());
 	}
 
 	@Override
@@ -133,6 +146,16 @@ public class OrderServiceImpl implements OrderService{
 //		order.setCart(null);
 		or.delete(ord.get());
 		return ord.get();
+	}
+
+	@Override
+	public List<Order> viewAllOrder() throws OrderException, AdminException {
+		List<Order>list=or.findAll();
+		if(list.size()==0) {
+			throw new OrderException("no order found");
+		}
+		Collections.reverse(list);
+		return list;
 	}
 
 }
