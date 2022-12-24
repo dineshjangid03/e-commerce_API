@@ -13,6 +13,7 @@ import com.shopy.model.Cart;
 import com.shopy.model.CurrentUserSession;
 import com.shopy.model.Customer;
 import com.shopy.model.Product;
+import com.shopy.model.ProductDTO;
 import com.shopy.repository.CartRepo;
 import com.shopy.repository.CustomerRepo;
 import com.shopy.repository.ProductRepo;
@@ -33,9 +34,9 @@ public class CartServiceImpl implements CartService{
 	@Autowired
 	private UserSessionRepo usrRepo;
 	
-	public int cartTotal(List<Product>list) {
+	public int cartTotal(List<ProductDTO>list) {
 		int total=0;
-		for(Product p:list) {
+		for(ProductDTO p:list) {
 			if(p.getQuantity()!=0) {
 				total+=p.getPrice()*p.getQuantity();
 			}
@@ -43,9 +44,9 @@ public class CartServiceImpl implements CartService{
 		return total;
 	}
 	
-	public int cartTotalQuantity(List<Product>list) {
+	public int cartTotalQuantity(List<ProductDTO>list) {
 		int total=0;
-		for(Product p:list) {
+		for(ProductDTO p:list) {
 			if(p.getQuantity()!=0) {
 				total+=p.getQuantity();
 			}
@@ -108,31 +109,32 @@ public class CartServiceImpl implements CartService{
 		
 		Cart cart=cr.findByCustomerId(currentUser.getUserId());
 		
-//		Optional<Cart>cartOp=cr.findById(cartId);
-//		if(cartOp.isEmpty()) {
-//			throw new CartException("cart not found with id "+cartId);
-//		}
-		
 		Optional<Product>pro=prepo.findById(productId);
 		if(pro.isEmpty()) {
-			throw new ProductException("product mot foumd with id "+productId);
+			throw new ProductException("product mot found with id "+productId);
 		}
 		
 		Product product=pro.get();
 		
-//		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
-//			throw new CartException("user mismatch please try again");
-
+		ProductDTO pdto=new ProductDTO();
+		pdto.setDescription(product.getDescription());
+		pdto.setPrice(product.getPrice());
+		pdto.setProductId(product.getProductId());
+		pdto.setProductName(product.getProductName());
+		pdto.setUrl(product.getUrl());
+		pdto.setAvailableProduct(product.getQuantity());
+		
 		boolean flag=true;
-		for(Product p:cart.getProducts()) {
+		
+		for(ProductDTO p:cart.getProducts()) {
 			if(p.getProductId()==productId) {
 				flag=false;
 				p.setQuantity(p.getQuantity()+1);
 			}
 		}
 		if(flag) {
-			product.setQuantity(1);
-			cart.getProducts().add(product);
+			pdto.setQuantity(1);
+			cart.getProducts().add(pdto);
 		}
 		
 		cart.setTotalPrice(cartTotal(cart.getProducts()));
@@ -151,16 +153,7 @@ public class CartServiceImpl implements CartService{
 		
 		CurrentUserSession currentUser=cUser.get(0);
 		
-//		Optional<Cart>cartOp=cr.findById(cartId);
-//		if(cartOp.isEmpty()) {
-//			throw new CartException("cart not found with id "+cartId);
-//		}
-		
 		Cart cart=cr.findByCustomerId(currentUser.getUserId());
-		
-//		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
-//			throw new CartException("user mismatch please try again");
-
 		
 		boolean flag=cart.getProducts().removeIf(p-> p.getProductId()==productId);
 		
@@ -183,12 +176,6 @@ public class CartServiceImpl implements CartService{
 			throw new CartException("you are not logged in please log in");
 		
 		CurrentUserSession currentUser=cUser.get(0);
-		
-//		Optional<Cart>cartOp=cr.findById(cartId);
-		
-//		if(cartOp.isEmpty()) {
-//			throw new CartException("cart not found with id "+cartId);
-//		}
 		
 		Optional<Product>pro=prepo.findById(productId);
 		if(pro.isEmpty()) {
@@ -220,20 +207,14 @@ public class CartServiceImpl implements CartService{
 		
 		CurrentUserSession currentUser=cUser.get(0);
 		
-//		Optional<Cart>cartOp=cr.findById(cartId);
 		Optional<Product>pro=prepo.findById(productId);
-//		if(cartOp.isEmpty()) {
-//			throw new CartException("cart not found with id "+cartId);
-//		}
+
 		if(pro.isEmpty()) {
 			throw new ProductException("product not found with id "+productId);
 		}
 		Cart cart=cr.findByCustomerId(currentUser.getUserId());
 		
-//		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
-//			throw new CartException("user mismatch please try again");
 
-		
 		cart.getProducts().forEach(p->{
 			if(p.getProductId()==productId) {
 				p.setQuantity(p.getQuantity()-1);
@@ -257,15 +238,8 @@ public class CartServiceImpl implements CartService{
 		CurrentUserSession currentUser=cUser.get(0);
 		
 		
-//		Optional<Cart>cartOp=cr.findById(cartId);
-//		if(cartOp.isEmpty()) {
-//			throw new CartException("cart not found with id "+cartId);
-//		}
 		Cart cart=cr.findByCustomerId(currentUser.getUserId());
 		
-//		if(cart.getCustomer().getCustomerId()!=currentUser.getUserId())
-//			throw new CartException("user mismatch please try again");
-
 		cart.getProducts().clear();
 		cart.setTotalPrice(0);
 		cart.setTotalItems(0);
@@ -299,7 +273,12 @@ public class CartServiceImpl implements CartService{
 		
 		CurrentUserSession currentUser=cUser.get(0);
 		
-		return cr.findByCustomerId(currentUser.getUserId());
+		Cart cart=cr.findByCustomerId(currentUser.getUserId());
+		List<ProductDTO> list=cart.getProducts();
+		for(ProductDTO p:list) {
+			p.setAvailableProduct(prepo.findById(p.getProductId()).get().getQuantity());
+		}
+		return cr.save(cart);
 	}
 
 }

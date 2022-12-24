@@ -33,6 +33,6 @@ public class Cart {
 	private Customer customer;
 	
 	@OneToMany(cascade = CascadeType.ALL)
-	private List<Product>products;
+	private List<ProductDTO>products;
 
 }

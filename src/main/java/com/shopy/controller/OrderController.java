@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.shopy.exception.AdminException;
 import com.shopy.exception.CartException;
 import com.shopy.exception.OrderException;
 import com.shopy.model.Order;
@@ -43,6 +44,12 @@ public class OrderController {
 	@GetMapping("/viewOrdersByDate/{startDate}/{endDate}")
 	public ResponseEntity<List<Order>> viewOrdersByDate(@PathVariable("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate, @PathVariable("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) throws OrderException {
 		List<Order> list=os.viewOrdersByDate(startDate, endDate);
+		return new ResponseEntity<List<Order>>(list,HttpStatus.ACCEPTED);
+	}
+	
+	@GetMapping("/viewAllOrder")
+	public ResponseEntity<List<Order>> viewAllOrder() throws OrderException, AdminException {
+		List<Order> list=os.viewAllOrder();
 		return new ResponseEntity<List<Order>>(list,HttpStatus.ACCEPTED);
 	}
 
