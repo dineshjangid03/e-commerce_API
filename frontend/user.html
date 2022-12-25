@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="user.css">
+</head>
+<body>
+    <section class="top-nav">
+        <div>
+          
+        </div>
+        <input id="menu-toggle" type="checkbox" />
+        <label class='menu-button-container' for="menu-toggle">
+            <div class='menu-button'></div>
+        </label>
+        <ul class="menu">
+          <!-- <li><a class="tdn" href="#box1">#</a></li> -->
+          <li><a class="tdn">
+            <form action="">
+                <input type="text" id="pro" placeholder="search">
+                <button onclick="viewProByName()" type="submit">serach</button>
+            </form>
+          </a></li>
+          <li><a class="tdn" onclick="viewAllCat()">Categories</a></li>
+          <li><a class="tdn" href="userprofile.html">My Profile</a></li>
+          <li><a class="tdn" href="cart.html">Cart</a></li>
+          <li><a class="tdn" onclick="viewOrder()">View Orders</a></li>
+        </ul>
+    
+    </section>
+
+    <div id="display">
+        
+    </div>
+
+    <div id="parent">
+        
+    </div>
+
+</body>
+</html>
+<script src="/js/user.js"></script>
