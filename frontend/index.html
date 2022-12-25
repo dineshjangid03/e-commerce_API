@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      .box{
+        display: flex;
+        /* border: 1px solid; */
+        justify-content: space-evenly;
+      }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+
+    <div>
+        <div id="register-form">
+            <h3>Admin Register</h3>
+            <form>
+                <input type="text" id="email" placeholder="email"><br>
+                <input type="text" id="password" placeholder="password"><br>
+                <input type="text" id="mobile" placeholder="mobile"><br>
+                <input type="text" id="key" placeholder="validation key"><br>
+            </form>
+            <button onclick="Register()">Signup</button>
+        </div>
+
+
+        <div id="login-form">
+          <h3>Admin Login</h3>
+          <form>
+
+            <input type="text" id="mobile1" placeholder="mobile"><br>
+            <input type="text" id="password1" placeholder="password"><br>
+              
+          </form>
+          <button onclick="Login()">Login</button>
+        </div>
+    </div>
+
+
+    <div>
+      <div id="register-form">
+          <h3>Sign Up</h3>
+          <form>
+              <input type="text" id="name2" placeholder="Name"><br>
+              <input type="text" id="email2" placeholder="Email"><br>
+              <input type="text" id="password2" placeholder="Password"><br>
+              <input type="text" id="mobile2" placeholder="Mobile"><br>
+          </form>
+          <button onclick="Register1()">Signup</button>
+      </div>
+
+
+      <div id="login-form">
+          <h3>Login</h3>
+          <form>
+            <input type="text" id="mobile3" placeholder="Mobile"><br>
+            <input type="text" id="password3" placeholder="Password"><br>
+          </form>
+          <button onclick="Login1()">Login</button>
+      </div>
+    </div>
+
+</div>
+
+</body>
+</html>
+<script src="/js/index.js"></script>
