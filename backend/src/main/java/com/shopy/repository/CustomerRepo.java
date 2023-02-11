@@ -11,5 +11,7 @@ import com.shopy.model.Customer;
 public interface CustomerRepo extends JpaRepository<Customer, Integer>{
 	
 	public List<Customer> findByMobile(String mobile);
+	
+	public List<Customer> findByEmail(String email);
 
 }
