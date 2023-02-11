@@ -131,21 +131,22 @@
     </style>
 </head>
 <body>
+
     
     <div class="container">
 
         <div class="front_card">
             <form class="login_form" action="javascript:void(0);">
-                <input type="text" id="mobile3" placeholder="Mobile">
-                <input type="password" id="password3" placeholder="Password">
-                <button class="login_btn" onclick="Login1()">LogIn</button>
+                <input type="text" id="mobile1" placeholder="mobile">
+            <input type="password" id="password1" placeholder="password">
+                <button class="login_btn" onclick="Login()">LogIn</button>
             </form>
             <form class="signup_form" action="javascript:void(0);">
-                <input type="text" id="name2" placeholder="Name">
-                <input type="email" id="email2" placeholder="Email">
-                <input type="password" id="password2" placeholder="Password">
-                <input type="text" id="mobile2" placeholder="Mobile">
-                <button class="login_btn" onclick="Register1()">SignUp</button>
+                <input type="email" id="email" placeholder="email">
+                <input type="password" id="password" placeholder="password">
+                <input type="text" id="mobile" placeholder="mobile">
+                <input type="text" id="key" placeholder="validation key">
+                <button class="login_btn" onclick="Register()">SignUp</button>
             </form>
         </div>
 
@@ -162,80 +163,69 @@
 
     </div>
 
+    
 </body>
 </html>
 
 <script>
-    async function Register1(){
-        let signup_data={
-            customerName:document.getElementById("name2").value,
-            email:document.getElementById("email2").value,
-            password:document.getElementById("password2").value,
-            mobile:document.getElementById("mobile2").value,
-            address: {
-            city: "",
-            country: "",
-            id: 0,
-            pincode: "",
-            state: ""
-            },
+    async function Register(){
+    let key=document.getElementById("key").value;
+    let signup_data={
+        adminEmail:document.getElementById("email").value,
+        adminPassword:document.getElementById("password").value,
+        adminMobile:document.getElementById("mobile").value,
+    }
+    
+    signup_data=JSON.stringify(signup_data)
+    
+    let signup_api_link=`http://localhost:8888/admin/register?validationKey=${key}`
+    let response=await fetch(signup_api_link,{
+        method:"POST",
+        body:signup_data,
+        headers:{
+            'Content-Type':'application/json'
         }
-        
-        signup_data=JSON.stringify(signup_data)
-        
-        let signup_api_link=`http://localhost:8888/customer/register`
-        let response=await fetch(signup_api_link,{
-            method:"POST",
-            body:signup_data,
-            headers:{
-                'Content-Type':'application/json'
-            }
-        })
-        let data=await response.json()
-        if(data.message!=null){
-            alert(data.message)
-        }
-        else{
-            console.log(data)
-            window.location.reload()
-        }
-        
+    })
+    let data=await response.json()
+    console.log(data)
+}
+
+
+async function Login(){
+
+    let login_data={
+      mobile:document.getElementById("mobile1").value,
+      password:document.getElementById("password1").value,
     }
 
+    login_data=JSON.stringify(login_data)
 
-    async function Login1(){
-
-        let login_data={
-        mobile:document.getElementById("mobile3").value,
-        password:document.getElementById("password3").value,
+    let login_api_link=`http://localhost:8888/adminlogin/login`
+    let response=await fetch(login_api_link,{
+        method:"POST",
+        body:login_data,
+        headers:{
+            'Content-Type':'application/json'
         }
+    })
 
-        login_data=JSON.stringify(login_data)
+    let data=await response.json()
+    fun(data)
 
-        let login_api_link=`http://localhost:8888/userlogin/login`
-        let response=await fetch(login_api_link,{
-            method:"POST",
-            body:login_data,
-            headers:{
-                'Content-Type':'application/json'
-            }
-        })
-
-        let data=await response.json()
-        fun1(data)
-    }
+}
 
 
-    function fun1(data){
-        if(data.uuid!=null){
-            localStorage.setItem("user",JSON.stringify(data))
-            window.location.href="user.html"
-        }
-        else{
-            alert(data.message)
-        }
-    }
+function fun(data){
+  if(data.uuid!=null){
+    localStorage.setItem("admin",JSON.stringify(data))
+    window.location.href="admin.html"
+  }
+  else{
+    alert(data.message)
+  }
+}
 </script>
+
 
 <script>
 

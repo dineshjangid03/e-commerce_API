@@ -32,8 +32,20 @@ public class CustomerServiceImpl implements CustomerService{
 	@Override
 	public Customer registerCustomer(Customer customer) throws CustomerException {
 		
+		List<Customer> byMail=cr.findByEmail(customer.getEmail());
+		List<Customer> byMobile=cr.findByMobile(customer.getMobile());
+		
+		if(byMobile.size()>0) {
+			throw new CustomerException("mobile number already registered");
+		}
+		if(byMail.size()>0) {
+			throw new CustomerException("mail already registered");
+		}
+		
 		Customer saved=cr.save(customer);
 		Cart cart=new Cart();
+		cart.setTotalItems(0);
+		cart.setTotalPrice(0);
 		cart.setCustomer(saved);
 		cartR.save(cart);
 		customer.setCart(cart);
