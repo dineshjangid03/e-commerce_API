@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url(https://fonts.googleapis.com/css?family=Fredoka+One);
+
+
+html { overflow-y: scroll; }
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 62.5%;
+  line-height: 1;
+  color: #414141;
+  padding: 25px 0;
+}
+
+table { 
+    border-collapse: collapse; 
+    border-spacing: 0; 
+}
+img { 
+    border: 0; 
+    max-width: 100%; 
+}
+
+h1 {
+  font-family: 'Fredoka One', Helvetica, Tahoma, sans-serif;
+  color: #fff;
+  text-shadow: 1px 2px 0 #7184d8;
+  font-size: 3.5em;
+  line-height: 1.1em;
+  padding: 6px 0;
+  font-weight: normal;
+  text-align: center;
+}
+
+
+/* page structure */
+#w {
+  display: block;
+  width: 900px;
+  margin: 0 auto;
+}
+
+#title {
+  display: block;
+  width: 100%;
+  background: #95a6d6;
+  padding: 10px 0;
+}
+
+#page {
+  display: block;
+  background: #fff;
+  padding: 15px 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.4);
+}
+
+/** cart table **/
+#cart {
+  display: block;
+  border-collapse: collapse;
+  margin: 0;
+  width: 100%;
+  font-size: 1.2em;
+  color: #444;
+}
+#cart thead th {
+  padding: 8px 0;
+  font-weight: bold;
+}
+
+#cart thead th.first {
+  width: 175px;
+}
+#cart thead th.second {
+  width: 200px;
+}
+#cart thead th.third {
+  width: 230px;
+}
+#cart thead th.fourth {
+  width: 130px;
+}
+#cart thead th.fifth {
+  width: 20px;
+}
+
+#cart tbody td {
+  text-align: center;
+  margin-top: 4px;
+}
+
+tr.productitm {
+  height: 65px;
+  line-height: 65px;
+  border-bottom: 1px solid #d7dbe0;
+}
+
+
+#cart tbody td img.thumb {
+  vertical-align: bottom;
+  border: 1px solid #ddd;
+  margin-bottom: 4px;
+}
+
+.qtyinput {
+  width: 33px;
+  height: 22px;
+  border: 1px solid #a3b8d3;
+  background: #dae4eb;
+  color: #616161;
+  text-align: center;
+}
+
+tr.totalprice, tr.extracosts {
+  height: 35px;
+  line-height: 35px;
+}
+tr.extracosts {
+  background: #e4edf4;
+}
+
+.remove {
+  cursor: pointer;
+  position: relative;
+  right: 12px;
+  top: 5px;
+}
+
+
+.light {
+  color: #888b8d;
+  text-shadow: 1px 1px 0 rgba(255,255,255,0.45);
+  font-size: 1.1em;
+  font-weight: normal;
+}
+.thick {
+  color: #272727;
+  font-size: 1.7em;
+  font-weight: bold;
+}
+
+
+/** submit btn **/
+tr.checkoutrow {
+  background: #cfdae8;
+  border-top: 1px solid #abc0db;
+  border-bottom: 1px solid #abc0db;
+}
+td.checkout {
+  padding: 12px 0;
+  padding-top: 20px;
+  width: 100%;
+  text-align: right;
+}
+
+
+#submitbtn {
+  width: 150px;
+  height: 35px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  margin: 0 0 10px 0;
+  font-size: 1.3em;
+  letter-spacing: 0.05em;
+  font-family: Arial, Tahoma, sans-serif;
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
+  overflow: hidden;
+  border-bottom: 1px solid #0071ff;
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #66aaff), color-stop(100%, #4d9cff));
+}
+#submitbtn:hover {
+  background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #4d9cff), color-stop(100%, #338eff));
+}
+
+    </style>
+
+    <style>
+        .butn{
+            padding: 3px 5px;
+            margin: 10px;
+        }
+        .delete_from_cart{
+            color: white;
+            font-weight: bold;
+            background-color: red;
+            border: 1px solid red;
+            padding: 3px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <body>
+        <div id="w">
+          <header id="title">
+            <h1>Your Cart</h1>
+          </header>
+          <div id="page">
+            <table id="cart">
+
+              <thead>
+                <tr>
+                  <th class="first">Photo</th>
+                  <th class="second">Qty</th>
+                  <th class="third">Product</th>
+                  <th class="fourth">Price</th>
+                  <th class="fourth">Total</th>
+                  <th class="fifth">&nbsp;</th>
+                  <th class="fourth"></th>
+                </tr>
+              </thead>
+
+              <tbody id="parent">
+              </tbody>
+
+              <tbody>
+                <tr class="totalprice">
+                    <td class="light">Total:</td>
+                    <td colspan="2">&nbsp;</td>
+                    <td colspan="2"><span class="thick" id="totalp"></span></td>
+                </tr>
+                <tr class="checkoutrow">
+                    <td colspan="7" class="checkout"><button id="submitbtn" onclick="clearCart()">Clear Cart!</button>&nbsp;<button id="submitbtn" onclick="checkout()">Checkout Now!</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </body>
+      <script>
+
+        let user=JSON.parse(localStorage.getItem("user"))
+        if(user==null){
+            alert("please login")
+        window.location.href="index.html"
+        }
+
+
+        viewCart();
+
+        function viewCart(){
+            
+            let uuid=user.uuid;
+            fetch(`http://localhost:8888/cart/view/${uuid}`)
+            .then((response) => response.json())
+            .then((data) => displayData(data));
+        }
+
+
+        function displayData(data){
+            document.querySelector("#totalp").innerHTML="₹ "+data.totalPrice;
+            displaymens(data.products);
+        }
+
+
+        function displaymens(mensData){
+            document.querySelector("#parent").innerHTML="";
+            mensData.forEach(function(el){
+
+            let div=document.createElement("tr")
+            div.setAttribute("class","productitm")
+
+            let td1=document.createElement("td")
+
+            let imag=document.createElement("img")
+            imag.setAttribute("src",el.url)
+            imag.setAttribute("class","thumb")
+
+            td1.append(imag)
+
+            let name=document.createElement("td")
+            name.innerText=el.productName;
+            name.setAttribute("class","name")
+
+
+            let quan=document.createElement("td")
+            
+            let btn1=document.createElement("button")
+            btn1.innerText="-"
+            let btn2=document.createElement("button")
+            btn2.innerText="+"
+            btn1.setAttribute("class","butn")
+            btn2.setAttribute("class","butn")
+
+            let spn=document.createElement("span")
+            
+            let quantity=document.createElement("span")
+            quantity.innerText=el.quantity;
+            quantity.setAttribute("class","quantity")
+
+            spn.append(btn1,quantity,btn2)
+
+            quan.append(spn)
+
+            let td2=document.createElement("td")
+            let available=document.createElement("p")
+            if(el.quantity>el.availableProduct){
+                available.innerText="out of stock";
+            }
+            else if(el.availableProduct<=5){
+                available.innerText="only "+el.availableProduct+" product left";
+            }
+            available.setAttribute("class","quantity")
+
+            td2.append(available)
+
+            let price=document.createElement("td")
+            price.innerText="₹ "+el.price
+            price.setAttribute("class","price")
+
+
+            let tprice=document.createElement("td")
+            tprice.innerText="₹ "+el.price*el.quantity
+            tprice.setAttribute("class","tprice")
+
+
+            let rmv=document.createElement("td")
+
+            let btn=document.createElement("button")
+            btn.innerText="Remove"
+            btn.setAttribute("class","delete_from_cart")
+            btn.addEventListener("click",function(){
+                removeFromCart(el);
+            })
+
+            rmv.append(btn)
+
+            btn2.addEventListener("click",function(){
+                incr(el);
+            })
+            btn1.addEventListener("click",function(){
+                decr(el);
+            })
+
+            div.append(td1,name,quan,price,tprice,rmv,td2)
+            document.querySelector("#parent").append(div)
+            })
+        }
+
+        
+        async function removeFromCart(el){
+            let uuid=user.uuid;
+            let pid=el.productId;
+            let api_link=`http://localhost:8888/cart/removeItemFromCart/${pid}/${uuid}`
+            let response=await fetch(api_link,{
+                method:"PUT",
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            let data=await response.json()
+
+            if(data.message!=null){
+                alert(data.message);
+            }
+            else{
+                viewCart();
+            }
+        }
+
+        
+        async function incr(el){
+            let uuid=user.uuid;
+            let pid=el.productId;
+            let api_link=`http://localhost:8888/cart/increaseQuantity/${pid}/${uuid}`
+            let response=await fetch(api_link,{
+                method:"PUT",
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            let data=await response.json()
+
+            if(data.message!=null){
+                alert(data.message);
+            }
+            else{
+                viewCart();
+            }
+        }
+
+        
+        async function decr(el){
+            let uuid=user.uuid;
+            let pid=el.productId;
+            let api_link=`http://localhost:8888/cart/decreaseQuantity/${pid}/${uuid}`
+            let response=await fetch(api_link,{
+                method:"PUT",
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            let data=await response.json()
+
+            if(data.message!=null){
+                alert(data.message);
+            }
+            else{
+                viewCart();
+            }
+        }
+
+
+        async function checkout(){
+            
+            let uuid=user.uuid;
+
+            let api_link=`http://localhost:8888/order/addOrder/${uuid}`
+            let response=await fetch(api_link,{
+                method:"POST",
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            let data=await response.json()
+
+            if(data.message!=null){
+                alert(data.message);
+            }
+            else{
+                alert("order confirmed")
+                console.log(data);
+            }
+        }
+
+
+        async function clearCart(){
+            let uuid=user.uuid;
+
+            let api_link=`http://localhost:8888/cart/clearCart/${uuid}`
+            let response=await fetch(api_link,{
+                method:"PUT",
+                headers:{
+                    'Content-Type':'application/json'
+                }
+            })
+            let data=await response.json()
+
+            if(data.message!=null){
+                alert(data.message);
+            }
+            else{
+                console.log(data)
+                viewCart();
+            }
+        }
+
+</script>
+</body>
+</html>
+
