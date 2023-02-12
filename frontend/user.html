@@ -5,9 +5,154 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="user.css">
+    <link rel="stylesheet" href="nav.css">
+
+
+    <style>
+          * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box; 
+        }
+        
+        #display{
+            height: 70px;
+        }
+
+        .image{
+            max-width: 100px;
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .name{
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .desc{
+            font-size: 14px;
+            line-height: 20px;
+        }
+        .add_to_cart{
+            padding: 5px 10px;
+            margin-top: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bolder;
+        }
+
+        #parent>div{
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            padding: 20px 30px;
+            border-radius: 5px;
+        }
+        #parent>div:hover{
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+    </style>
+
+
+
+
+    <style>
+        body {
+        font-family: 'Nunito', sans-serif;
+            /* width: 100wh; */
+            /* height: 90vh; */
+            color: #fff;
+            background: linear-gradient(-45deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+            background-size: 400% 400%;
+            -webkit-animation: Gradient 15s ease infinite;
+            -moz-animation: Gradient 15s ease infinite;
+            animation: Gradient 15s ease infinite;
+        }
+
+        .products{
+        padding: 20px;
+        padding-top: 20px;
+        text-align: center;
+        }
+
+        .products .product {
+        position: relative;
+        overflow: hidden;
+        width: 250px;
+        height: 360px;
+        text-align: left;
+        display: inline-block;
+        background-color: rgba(0,0,0,0.1);
+        border: 1px solid rgba(0,0,0,0.1);
+        margin: 20px;
+        padding: 20px;
+        }
+
+        .products .product img {
+        position: relative;
+        top: -5px;
+        margin: auto;
+        transition: all .2s ease;
+        width: 100%;
+        -webkit-clip-path: polygon(0 100%, 0 0, 100% 0, 100% 70%);
+                clip-path: polygon(0 100%, 0 0, 100% 0, 100% 70%);
+        }
+        .products .product img:hover {
+        -webkit-clip-path: polygon(0 100%, 0 0, 100% 0, 100% 100%);
+                clip-path: polygon(0 100%, 0 0, 100% 0, 100% 100%);
+        -webkit-transform: scale(1.2);
+                transform: scale(1.2);
+        }
+
+        
+        .products .product .price {
+        /* text-align: center; */
+        margin-top: 25px;
+        color: white;
+        /* background: lightblue; */
+        /* border: 1px solid blue; */
+        /* border-radius: 10px; */
+        padding: 10px;
+        }
+
+        @-webkit-keyframes Gradient {
+            0% {
+                background-position: 0% 50%
+            }
+            50% {
+                background-position: 100% 50%
+            }
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @-moz-keyframes Gradient {
+            0% {
+                background-position: 0% 50%
+            }
+            50% {
+                background-position: 100% 50%
+            }
+            100% {
+                background-position: 0% 50%
+            }
+        }
+
+        @keyframes Gradient {
+            0% {
+                background-position: 0% 50%
+            }
+            50% {
+                background-position: 100% 50%
+            }
+            100% {
+                background-position: 0% 50%
+            }
+        }
+    </style>
+
 </head>
 <body>
+    
     <section class="top-nav">
         <div>
           
@@ -36,7 +181,7 @@
         
     </div>
 
-    <div id="parent">
+    <div id="parent" class="products">
         
     </div>
 
