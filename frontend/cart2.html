@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart</title>
+    <link rel="stylesheet" href="nav.css">
+
+    <style>
+        * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box; 
+    }
+
+    #parent{
+        width: 95%;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
+        gap: 40px;
+        margin-bottom: 30px;
+      }
+      #parent>div{
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        padding: 20px 30px;
+        border-radius: 5px;
+      }
+      #parent>div:hover{
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      }
+      .image{
+        max-width: 100px;
+      }
+
+      #totalp{
+        padding: 20px 40px;
+        line-height: 30px;
+      }
+      .clc{
+        margin-left: 40px;
+        margin-top: 10px;
+      }
+    
+      .butn{
+        padding: 0 5px;
+        margin: 0 9px;
+      }
+
+    </style>
+
+</head>
+<body>
+    <div id="cartDiv">
+
+        <button onclick="clearCart()" class="clc">clear cart</button>
+        <button onclick="checkout()" id="checkout">checkout</button>
+        <div id="totalp">
+
+        </div>
+
+        <div id="parent">
+
+        </div>
+
+    </div>
+</body>
+</html>
+<script src="/js/cart.js"></script>
