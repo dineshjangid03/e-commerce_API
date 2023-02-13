@@ -40,7 +40,7 @@ public class CustomerLoginImpl implements CustomerLogin{
 			if(customer.getPassword().equals(dto.getPassword())) {
 				return validation.get();
 			}
-			throw new LoginException("user already logged in eith this number");
+			throw new LoginException("Please enter valid password");
 		}
 		
 		if(customer.getPassword().equals(dto.getPassword())) {
