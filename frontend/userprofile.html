@@ -4,34 +4,209 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-        }
-        #viewcustomer{
-            padding: 20px;
-        }
-        .bdiv{
-            padding: 20px;
-            padding-top: 0;
-        }
-        input{
-            width: 200px;
-            margin-bottom: 10px;
-            margin-top: 2px;
-        }
-    </style>
+    <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
-    <div id="viewcustomer">
-    </div>
 
-    <div class="bdiv">
-        <button onclick="updateDetail()">update</button>
-        <button onclick="logout()">log out</button>
-    </div>
+
+
+    <div class="container">
+		<div class="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12 edit_information">
+			<form action=""  method="POST">	
+				<h3 class="text-center">Edit Personal Information</h3>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="profile_details_text">Name:</label>
+							<input type="text" name="first_name" class="form-control" id="name">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="profile_details_text">Email Address:</label>
+							<input type="email" name="email" class="form-control" id="email">
+						</div>
+					</div>
+				</div>
+                <div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="profile_details_text">Mobile Number:</label>
+							<input type="tel" name="phone" class="form-control" id="mobile">
+						</div>
+					</div>
+				</div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group">
+                            <label class="profile_details_text">Password: </label>
+                            <input type="text" name="last_name" class="form-control" id="password">
+                        </div>
+                    </div>
+                </div>
+				
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="profile_details_text">City:</label>
+							<input type="text" name="nationality" class="form-control" id="city">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="profile_details_text">State:</label>
+							<input type="text" name="monthly_income" class="form-control" id="state">
+						</div>
+					</div>
+				</div>
+
+                <div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="profile_details_text">Country:</label>
+							<input type="text" name="nationality" class="form-control" id="country">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div class="form-group">
+							<label class="profile_details_text">Pincode:</label>
+							<input type="text" name="monthly_income" class="form-control" id="pincode">
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<div>
+							<input type="button" class="btn btn-success" value="Submit" onclick="updateDetail()">
+						</div>
+					</div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+						<div>
+							<input type="button" class="btn btn-success btn-danger" value="Logout" onclick="logout()">
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+
 </body>
 </html>
-<script src="/js/userprofile.js"></script>
+<script>
+
+
+
+    
+let user=JSON.parse(localStorage.getItem("user"))
+    if(user==null){
+        alert("please login")
+    window.location.href="index.html"
+    }
+
+
+    viewPro();
+
+
+    function viewPro(){
+        let uuid=user.uuid;
+
+        fetch(`http://localhost:8888/customer/view/${uuid}`)
+        .then((response) => response.json())
+        .then((data) => disPro(data));
+    }
+
+
+    async function logout(){
+        let uuid=user.uuid;
+
+        let api_link=`http://localhost:8888/userlogin/logout?key=${uuid}`
+        let response=await fetch(api_link,{
+            method:"POST",
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })
+        localStorage.setItem("user",null)
+        window.location.reload()
+    }
+
+    
+    function disPro(data){
+        let name=document.getElementById("name");
+        name.value=data.customerName
+
+        let email=document.getElementById("email");
+        email.value=data.email
+
+        let mobile=document.getElementById("mobile");
+        mobile.value=data.mobile
+
+        let password=document.getElementById("password");
+        password.value=data.password
+
+        let city=document.getElementById("city");
+        city.value=data.address.city
+
+        let state=document.getElementById("state");
+        state.value=data.address.state
+
+        let country=document.getElementById("country");
+        country.value=data.address.country
+
+        let pincode=document.getElementById("pincode");
+        pincode.value=data.address.pincode
+        
+    }
+
+
+    async function updateDetail(){
+
+        let key=user.uuid;
+
+        let pro_data={
+            address:{
+                city:document.getElementById("city").value,
+                country:document.getElementById("country").value,
+                pincode:document.getElementById("pincode").value,
+                state:document.getElementById("state").value,
+            },
+            customerName:document.getElementById("name").value,
+            email:document.getElementById("email").value,
+            mobile:document.getElementById("mobile").value,
+            password:document.getElementById("password").value,
+        }
+
+        pro_data=JSON.stringify(pro_data)
+
+        let api_link=`http://localhost:8888/customer/update?key=${key}`
+        let response=await fetch(api_link,{
+            method:"PUT",
+            body:pro_data,
+            headers:{
+                'Content-Type':'application/json'
+            }
+        })
+        let data=await response.json()
+
+
+        if(data.message!=null){
+            alert(data.message);
+        }
+        else{
+            console.log(data)
+        }
+    }
+
+
+
+</script>
