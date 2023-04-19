@@ -72,10 +72,7 @@ public class CustomerServiceImpl implements CustomerService{
 		List<CurrentUserSession> extCu=usRepo.findByUuid(key);
 		if(extCu.size()==0)
 			throw new CustomerException("key is not valid");
-		
-//		if(extCu.get(0).getUserId()!=customer.getCustomerId())
-//			throw new CustomerException("invalid customer detail, please login first");
-//		
+
 		Optional<Customer> c=cr.findById(extCu.get(0).getUserId());
 		
 		if(!c.isPresent()) {
