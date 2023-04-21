@@ -44,11 +44,9 @@ public class ProductServiceImpl implements ProductService{
 		
 		product.setCategory(category);
 		
-//		crepo.save(category);
 		
 		return pr.save(product);
 		
-//		return product;
 	}
 
 	@Override
